@@ -4,7 +4,7 @@ const app =express()// express modülü bizim için bir uygulama getirmesi gerek
                     // ve app üzerinden uygulamanın request ve response sini kontrol edeceğiz
 
 app.set("view engine","ejs") // veritabanından veri alışverişi için expressjs sitesinden template engines kütüphanesini indiriyoruz
-app.get("viev engine") // bu işlemden sonra tüm hstml sayfalarını .ejs olarak değiştirmeliyiz
+app.get("viev engine") // bu işlemden sonra tüm hstml sayfalarını .ejs olarak değiştirmeliyiz vegörüntü sayfalarını views klasöründe aramaya başlar
 
 const path =require("path")// dosya yollarının birleştirmek için kullanıcazz serverin tam yolunu getirecek
 const userRoutes=require("./routes/user") // user yönlendirme işlemlerini kullanabilmek için dosya import ediliyor 

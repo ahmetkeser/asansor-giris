@@ -1,13 +1,12 @@
 const express = require("express")
 const router = express.Router()
-const path = require ("path")
 router.use("/hizmetler",function(req,res){
-    res.sendFile(path.join(__dirname,"../views/admin","hizmetler-edit.html"))
+    res.render("admin/hizmetler-edit")
 })
 router.use("/referanslar",function(req,res){
-    res.sendFile(path.join(__dirname,"../views/admin","referanslar-edit.html"))
+    res.render("admin/referanslar-edit")
 })
 router.use("/index",function(req,res){
-    res.sendFile(path.join(__dirname,"../views/admin","index-edit.html"))
+    res.render("admin/index-edit")
 })
 module.exports = router
