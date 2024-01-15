@@ -2,8 +2,7 @@ const express = require("express")
 const router=express.Router()
 const data={
     title:"hizmetler",
-    categories:["Hizmetler","Referanslar","İletişim"],
-    hizmetler:[
+    categories:[
         {
             hizmetid:1,
             baslik:"Asansör Kurulumu ve Montaj",
@@ -34,13 +33,27 @@ const data={
             aciklama:"Yeni bir bina inşa ediyorsanız veya mevcut binanızın asansör sistemini değiştirmeyi düşünüyorsanız, firmamız size en uygun tasarımı ve danışmanlığı sunar. Hem estetik hem de fonksiyonel açıdan en uygun çözümleri bulmak için uzman ekibimiz size rehberlik eder.",
             resim:"asan-3.jpeg"
         }
+    ],
+    linkBar:[ 
+        {
+            castegoriesTitle:"Hizmetler",
+            categoriesLink:"/hizmetler"
+        },
+        {
+            castegoriesTitle:"Referanslar",
+            categoriesLink:"/referanslar"
+        },
+        {
+            castegoriesTitle:"İletişim",
+            categoriesLink:"/iletisim"
+        }
     ]
 }
 router.use("/iletisim", function(req,res){
-    res.render("users/iletisim")// kullanıcı /blogs/5 gibi bir istemde dosya yolunu belirtiyoruz
+    res.render("users/iletisim",data)// kullanıcı /blogs/5 gibi bir istemde dosya yolunu belirtiyoruz
 })
 router.use("/referanslar", function(req,res){
-    res.render("users/referanslar")// kullanıcı /blogs/5 gibi bir istemde dosya yolunu belirtiyoruz
+    res.render("users/referanslar",data)// kullanıcı /blogs/5 gibi bir istemde dosya yolunu belirtiyoruz
 })
 router.use("/hizmetler", function(req,res){
     res.render("users/hizmetler",data)//

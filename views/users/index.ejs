@@ -15,14 +15,12 @@
                 <!-- <a href="/hizmetler" class="list-group-item list-group-item-hover" >Hizmetler</a>
                 <a href="/referanslar" class="list-group-item list-group-item-hover">Referanslar</a>
                 <a href="/iletisim" class="list-group-item list-group-item-hover">İletişim</a> -->
-                <% categories.forEach(function(category){ %>
-                    <a href="/hizmetler" class="list-group-item list-group-item-hover" ><%= category %></a>
-                <% })  %>
+                <%- include('../partials/link-panel',linkBar) %>
             </div>
             <img src="\static\images\asan-logo.jpeg" alt="" class="img-fluid">
         </div>
         <div class="col-md-9">
-            <section class="container mt-5">
+            <section class="container mt-3">
                 <h2>Biz Kimiz?</h2>
                 <p class="lead">Asansör Firması olarak, uzun yıllara dayanan tecrübemiz ve sektördeki lider konumumuzla müşterilere güvenilir, yenilikçi ve kaliteli asansör çözümleri sunuyoruz.</p>
             

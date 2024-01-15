@@ -12,13 +12,12 @@
     <div class="row">
         <div class="col-md-3">
             <div class="list-group">
-                <a href="/hizmetler" class="list-group-item list-group-item-action active">Hizmetler</a>
-                <a href="/referanslar" class="list-group-item list-group-item-action">Referanslar</a>
-                <a href="/iletisim" class="list-group-item list-group-item-action">İletişim</a>
+                <%- include('../partials/link-panel',linkBar) %>
             </div>
+            <img src="\static\images\asan-logo.jpeg" alt="" class="img-fluid">
         </div>
         <div class="col-md-9">
-            <% hizmetler.forEach(hizmet =>{ %>
+            <% categories.forEach(hizmet =>{ %>
                 <div class="card mb-3">
                     <div class="row">
                         <div class="col-md-3">
