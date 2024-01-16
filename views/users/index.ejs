@@ -12,24 +12,16 @@
     <div class="row">
         <div class="col-md-3">
             <div class="list-group">
-                <!-- <a href="/hizmetler" class="list-group-item list-group-item-hover" >Hizmetler</a>
-                <a href="/referanslar" class="list-group-item list-group-item-hover">Referanslar</a>
-                <a href="/iletisim" class="list-group-item list-group-item-hover">İletişim</a> -->
-                <%- include('../partials/link-panel',linkBar) %>
+                <%- include('../partials/link-panel',linkbar) %>
             </div>
             <img src="\static\images\asan-logo.jpeg" alt="" class="img-fluid">
         </div>
         <div class="col-md-9">
             <section class="container mt-3">
-                <h2>Biz Kimiz?</h2>
-                <p class="lead">Asansör Firması olarak, uzun yıllara dayanan tecrübemiz ve sektördeki lider konumumuzla müşterilere güvenilir, yenilikçi ve kaliteli asansör çözümleri sunuyoruz.</p>
-            
-                <h3>Tecrübe ve Güven</h3>
-                <p>Şirketimiz, asansör sektöründeki zengin geçmişiyle gurur duyuyor. Yıllar içinde edinilen deneyim ve uzman kadromuz sayesinde, müşterilerimize en son teknolojiyle donatılmış güvenli, dayanıklı ve verimli asansör sistemleri sunabiliyoruz.</p>
-            
-                <h3>Profesyonel Ekibimiz</h3>
-                <p>Bünyemizde bulunan uzman mühendislerimiz, teknisyenlerimiz ve proje yöneticilerimiz, her projede en üst düzeyde kalite ve güvenilirlik sağlamak adına bir araya gelmiştir. Müşterilerimize özel çözümler sunmak için sürekli olarak kendimizi geliştirmekte ve sektördeki en son trendleri takip etmekteyiz.</p>
-            
+                <% bodytext.forEach(element=>{ %>
+                    <h2><%= element.title %></h2>
+                    <p><%= element.text %></p>
+                <%})%>            
             </section>
         </div>
     </div>
@@ -40,3 +32,9 @@
 
 </body>
 </html>
+Biz Kimiz?
+Asansör Firması olarak, uzun yıllara dayanan tecrübemiz ve sektördeki lider konumumuzla müşterilere güvenilir, yenilikçi ve kaliteli asansör çözümleri sunuyoruz.
+Tecrübe ve Güven
+Şirketimiz, asansör sektöründeki zengin geçmişiyle gurur duyuyor. Yıllar içinde edinilen deneyim ve uzman kadromuz sayesinde, müşterilerimize en son teknolojiyle donatılmış güvenli, dayanıklı ve verimli asansör sistemleri sunabiliyoruz.
+Profesyonel Ekibimiz
+Bünyemizde bulunan uzman mühendislerimiz, teknisyenlerimiz ve proje yöneticilerimiz, her projede en üst düzeyde kalite ve güvenilirlik sağlamak adına bir araya gelmiştir. Müşterilerimize özel çözümler sunmak için sürekli olarak kendimizi geliştirmekte ve sektördeki en son trendleri takip etmekteyiz.
