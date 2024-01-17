@@ -12,50 +12,26 @@
     <div class="row">
         <div class="col-md-3">
             <div class="list-group">
-                <%- include('../partials/link-panel',linkBar) %>
+                <%- include('../partials/link-panel',linkbar) %>
             </div>
             <img src="\static\images\asan-logo.jpeg" alt="" class="img-fluid">
         </div>
         <div class="col-md-9">
-            <div class="card mb-3">
-                <div class="row">
-                    <div class="col-md-3">
-                        <img src="\static\images\asan-1.jpeg" alt="" class="img-fluid">
-                    </div>
-                    <div class="col-md-9">
-                        <div class="card-body">
-                            <h5 class="card-title">Ana Başlık</h5>
-                            <p>Kart Text</p>
+            <% referanslar.forEach(element=>{%>
+                <div class="card mb-3">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img src="\static\images\<%=element.referansimage%>.jpeg" alt="" class="img-fluid">
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card-body">
+                                <h5 class="card-title"><%= element.referanstitle %></h5>
+                                <p><%= element.referansmodel %></p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="card mb-3">
-                <div class="row">
-                    <div class="col-md-3">
-                        <img src="\static\images\asan-2.jpeg" alt="" class="img-fluid">
-                    </div>
-                    <div class="col-md-9">
-                        <div class="card-body">
-                            <h5 class="card-title">Ana Başlık</h5>
-                            <p>Kart Text</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card mb-3">
-                <div class="row">
-                    <div class="col-md-3">
-                        <img src="\static\images\asan-3.jpeg" alt="" class="img-fluid">
-                    </div>
-                    <div class="col-md-9">
-                        <div class="card-body">
-                            <h5 class="card-title">Ana Başlık</h5>
-                            <p>Kart Text</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <%})%>
             <!-- pagination -->
             <%- include('../partials/pagination') %>
         </div>

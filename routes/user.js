@@ -51,26 +51,21 @@ const db=require("../data/db")// sql bağlantısını çağırdık
 //     ]
 // }
 router.use("/iletisim", async function(req,res){
-    res.render("users/iletisim",data)// kullanıcı /blogs/5 gibi bir istemde dosya yolunu belirtiyoruz
     try{
-        const res1 =await db.execute("select * from hizmetler")
         const res2=await db.execute("select * from linkpanel")
-        res.render("users/hizmetler",{
-            title:"hizmetler",
-            categories : res1[0],
+        res.render("users/iletisim",{
+            title:"İletişim",
             linkbar:res2[0]
-        })// 
+        })
     }   
     catch(err){console.log(err)}
 })
 router.use("/referanslar", async function(req,res){
-    res.render("users/referanslar",data)// kullanıcı /blogs/5 gibi bir istemde dosya yolunu belirtiyoruz
     try{
-        const res1 =await db.execute("select * from hizmetler")
+        const res1 =await db.execute("select * from referanslar")
         const res2=await db.execute("select * from linkpanel")
-        res.render("users/hizmetler",{
-            title:"hizmetler",
-            categories : res1[0],
+        res.render("users/referanslar",{
+            referanslar : res1[0],
             linkbar:res2[0]
         })// 
     }   
