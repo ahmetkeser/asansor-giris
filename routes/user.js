@@ -50,6 +50,21 @@ const db=require("../data/db")// sql bağlantısını çağırdık
 //         }
 //     ]
 // }
+router.use("/hizmetler/:hizmetid", async function(req,res){
+    const hizid= req.params.hizmetid
+    try{
+        
+        const [hizmetler, ] = await db.execute("select * from hizmetler where hizmetid=?",[hizid])
+        const [linkbar, ]=await db.execute("select * from linkpanel")
+        if(hizmetler[0]){ //kullanıcının talep ettiği idli hizmet varsa çalışır
+            
+            res.render("users/hizmet-detay",{hizmetler:hizmetler[0],linkbar})
+        }
+        res.redirect("/") // eğer hizmetler tablosunda kullanıcının talep ettiği id li bir hizmet yoksa ana sayfaya yönlendirir
+    }
+    catch(err){console.log(err)}
+})
+
 router.use("/iletisim", async function(req,res){
     try{
         const res2=await db.execute("select * from linkpanel")
@@ -57,6 +72,8 @@ router.use("/iletisim", async function(req,res){
             title:"İletişim",
             linkbar:res2[0]
         })
+        // const [linkbar, ]=await db.execute("select * from linkpanel")
+        // res.render("users/iletisim",linkbar)  Yukardaki kullanımın alternatifi - await işlemin problemsiz çalışmasını bekletir. Ayrıca [linkbar, ] bu sorgudan gelen dizinin ilk indisini dizi olarak linkbar a atar.
     }   
     catch(err){console.log(err)}
 })

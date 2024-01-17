@@ -12,7 +12,7 @@
     <div class="row">
         <div class="col-md-3">
             <div class="list-group">
-                <%- include('../partials/link-panel'),linkbar %>
+                <%- include('../partials/link-panel'),linkbar%>
             </div>
             <img src="\static\images\asan-logo.jpeg" alt="" class="img-fluid">
         </div>
@@ -25,7 +25,9 @@
                         </div>
                         <div class="col-md-9">
                             <div class="card-body">
-                                <h5 class="card-title"><%= hizmet.hizmettitle %></h5>
+                                <h5 class="card-title">
+                                    <a style="text-decoration: none" href="/hizmetler/<%=hizmet.hizmetid%>"><%= hizmet.hizmettitle %></a>
+                                </h5>
                                 <p><%= hizmet.hizmettext %></p>
                             </div>
                         </div>
