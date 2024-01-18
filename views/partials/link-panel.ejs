@@ -1,3 +1,5 @@
 <% linkbar.forEach(function(element){ %>
-    <a href="<%= element.panelrouter%>" class="list-group-item list-group-item-hover" ><%= element.paneltitle %></a>
-<% })  %>
+
+    <a href="<%= element.panelrouter%>" class="list-group-item list-group-item-hover
+        <%= title == element.paneltitle ? 'active':''%>" ><%= element.paneltitle %></a>
+<% }) %>
