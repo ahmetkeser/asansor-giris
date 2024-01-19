@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <%- include('../partials/head') %>
+</head>
+<body>
+<!-- Navbar -->
+    <%- include('../partials/nav') %> <!--ejsinc ile partials dosyasındaki parçayı çağırıyoruz. -->
+
+<!-- Ana İçerik -->
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md12 mt-3">
+                <table class="table table-bordered table-striped">
+                    <tr><a class="btn btn-l btn-success col-md-12" href="/admin/hizmet-add">+ Yeni Hizmet Ekle +</a></tr>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Başlık</th>
+                            <th>İçerik</th>
+                            <th width: 150px;>Resim</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% gelenHizmet.forEach(hizmet =>{ %>
+                            <tr>
+                                <td>#<%= hizmet.hizmetid %></td>
+                                <td><%= hizmet.hizmettitle %></td>
+                                <td><%= hizmet.hizmettext %></td>
+                                <td style="width: 150px; height: 110px"><img src="/static/images/<%= hizmet.hizmetresim%>.jpeg" class="img-fluid" alt=""></td>
+                                <td>
+                                    <a class="btn btn-sm btn-primary col-md-12" href="/admin/hizmet-edit/<%=hizmet.hizmetid%>" name="">Edit</a>
+                                    <a class="btn btn-sm btn-danger col-md-12" href="/admin/hizmet-edit/<%=hizmet.hizmetid%>" name="">Delete</a>
+                                </td>
+                            </tr>
+                        <% }) %>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+<!-- Footer -->
+<%- include('../partials/footer') %>
+
+</body>
+</html>
