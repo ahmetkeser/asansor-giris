@@ -136,6 +136,27 @@ router.post("/referans-edit/:refid", async function(req,res){
         console.log(err)
     }
 })
+// yeni girilecek referans kaydını kullanıcıdan alır
+router.get("/referans-add", async function(req,res){
+    try{
+        res.render("admin/referans-add",{
+            title:"Hizmet Ekle",
+        })
+    }catch(err){
+
+    }
+})
+// yeni girilecek referans kaydını veri tabanına gönderir
+router.post("/referans-add", async function(req,res){
+    const referanstitle=req.body.baslik
+    const referanstext = req.body.aciklama
+    const referansmodel = req.body.model
+    const referansresim = req.body.resim
+    try{
+        await db.execute("INSERT INTO referanslar (referanstitle, referansresim, referansmodel, referanstext) VALUES (?, ?, ?,?)", [referanstitle, referansresim,referansmodel, referanstext])
+        res.redirect("/admin/referans-list") // işlem bittikten sonra referanslar sayfasına yönlendirir.
+    }catch(err){console.log(err)}
+})
 
 router.use("/index-edit",function(req,res){
     res.render("admin/index-edit")
