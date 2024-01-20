@@ -12,26 +12,28 @@
         <div class="row">
             <div class="col-md12 mt-3">
                 <table class="table table-bordered table-striped">
-                    <tr><a class="btn btn-l btn-success col-md-12" href="/admin/hizmet-add">+ Yeni Hizmet Ekle +</a></tr>
+                    <tr><a class="btn btn-l btn-success col-md-12" href="/admin/referans-add">+ Yeni Referans Ekle +</a></tr>
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Başlık</th>
                             <th>İçerik</th>
+                            <th>Model</th>
                             <th width: 150px;>Resim</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <% gelenHizmet.forEach(hizmet =>{ %>
+                        <% referanslar.forEach(referans =>{ %>
                             <tr>
-                                <td>#<%= hizmet.hizmetid %></td>
-                                <td><%= hizmet.hizmettitle %></td>
-                                <td><%= hizmet.hizmettext %></td>
-                                <td style="width: 150px; height: 110px"><img src="/static/images/<%= hizmet.hizmetresim%>.jpeg" class="img-fluid" alt=""></td>
+                                <td>#<%= referans.referansid %></td>
+                                <td><%= referans.referanstitle %></td>
+                                <td><%= referans.referanstext %></td>
+                                <td><%= referans.referansmodel %></td>
+                                <td style="width: 150px; height: 110px"><img src="/static/images/<%= referans.referansresim%>.jpeg" class="img-fluid" alt=""></td>
                                 <td>
-                                    <a class="btn btn-sm btn-primary col-md-12" href="/admin/hizmet-edit/<%=hizmet.hizmetid%>" name="">Edit</a>
-                                    <a class="btn btn-sm btn-danger col-md-12" href="/admin/hizmet-delete/<%=hizmet.hizmetid%>" name="">Delete</a>
+                                    <a class="btn btn-sm btn-primary col-md-12" href="/admin/referans-edit/<%=referans.referansid%>" name="">Edit</a>
+                                    <a class="btn btn-sm btn-danger col-md-12" href="/admin/referans-delete/<%=referans.referansid%>" name="">Delete</a>
                                 </td>
                             </tr>
                         <% }) %>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <%- include('../partials/head') %>
+</head>
+<body>
+<!-- Navbar -->
+    <%- include('../partials/nav') %> <!--ejsinc ile partials dosyasındaki parçayı çağırıyoruz. -->
+
+<!-- Ana İçerik -->
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md-12 mt-3 text-center">
+                <div class="alert alert-secondary">
+                    <p class="mb-3">
+                        <b><%= hizmet.hizmettitle %></b><br> İsimli Blok Kaydını Silmek İstiyormusun?
+                    </p>
+                    <form action="" method="post">
+                        <input type="hidden" name="hizmetid" value="<%= hizmet.hizmetid%>">
+                        <button class="btn btn-danger" type="submit">EVET</button>
+                        <a href="/admin/hizmetler-list" class="btn btn-primary">VAZGEÇ</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Footer -->
+<%- include('../partials/footer') %>
+
+</body>
+</html>
