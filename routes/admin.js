@@ -140,10 +140,10 @@ router.post("/referans-edit/:refid", async function(req,res){
 router.get("/referans-add", async function(req,res){
     try{
         res.render("admin/referans-add",{
-            title:"Hizmet Ekle",
+            title:"Referans Ekle",
         })
     }catch(err){
-
+        console.log(err)
     }
 })
 // yeni girilecek referans kaydını veri tabanına gönderir
@@ -157,10 +157,56 @@ router.post("/referans-add", async function(req,res){
         res.redirect("/admin/referans-list") // işlem bittikten sonra referanslar sayfasına yönlendirir.
     }catch(err){console.log(err)}
 })
-
-router.use("/index-edit",function(req,res){
-    res.render("admin/index-edit")
+// anasayfa düzenlemek için veritabanındaki anasayfatext tablosunu getirir
+router.get("/index-list",async function(req,res){
+    try{
+        const [gelen, ] = await db.execute("select * from anasayfatext")
+        res.render("admin/index-list",{
+            title:"Anasayfa Bilgi Düzenle",
+            gelen:gelen
+        })
+    }catch(err){
+        console.log(err)
+    }
 })
+// index listesinden seçilen kaydı düzenleme sayfasına gönderir vvv
+router.get("/index-edit/:textid", async function(req,res){
+    const inid =req.params.textid
+    // const indextitle=req.body.baslik
+    // const indextext = req.body.aciklama
+    try{
+        const[veri, ]=await db.execute("select * from anasayfatext where textid = ?",[inid])
+        const gelen=veri[0]
+        if(gelen){
+            return res.render("admin/index-edit",{
+                title:"index verisi güncelle",
+                gelen:gelen,
+            })
+        }
+        res.redirect("admin/index-list")
+        
+    }catch(err){
+
+    }
+})
+// index listesinden düzennleme için gelen kaydı veri tabanına gönderir vvv
+router.post("/index-edit/:textid", async function(req,res){
+    const textid =req.params.textid
+    const title=req.body.baslik
+    const text = req.body.aciklama
+    console.log(textid)
+    try{
+        const[gelen, ]=await db.execute("UPDATE anasayfatext SET title=? , text=? WHERE textid=?" ,[title, text, textid ])
+        res.redirect("/admin/index-list")
+        
+    }catch(err){
+        console.log(err)
+    }
+})
+
+
+
+
 router.use("/categories",function(req,res){
     res.render("admin/index-edit")
 })
