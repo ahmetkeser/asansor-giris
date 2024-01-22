@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 
 const db = require("../data/db")
-
+//-------------------------------------------------
 // Hizmet Listesini veritabanından getirir vvv
 router.get("/hizmetler-list", async function(req,res){
     try{
@@ -74,10 +74,10 @@ router.post("/hizmet-delete/:hizid", async function(req,res){
 router.get("/hizmet-add", async function(req,res){
     try{
         res.render("admin/hizmet-add",{
-            title:"Hizmet Ekle",
+            title:"Hizmet Ekle"
         })
     }catch(err){
-
+        console.log(err)
     }
 })
 // yeni girilecek hizmet kaydını veri tabanına gönderir
@@ -91,6 +91,7 @@ router.post("/hizmet-add", async function(req,res){
         res.redirect("/admin/hizmetler-list") // işlem bittikten sonra hizmetler sayfasına yönlendirir.
     }catch(err){console.log(err)}
 })
+//-------------------------------------------------
 // Referanslar Listesini veritabanından getirir vvv
 router.get("/referans-list", async function(req,res){
     try{
@@ -156,6 +157,26 @@ router.post("/referans-add", async function(req,res){
         res.redirect("/admin/referans-list") // işlem bittikten sonra referanslar sayfasına yönlendirir.
     }catch(err){console.log(err)}
 })
+//-------------------------------------------------
+// anasayfa içeriğini kullanıcıdan alır
+router.get("/index-add", async function(req,res){
+    try{
+        res.render("admin/index-add",{
+            title:"Anasayfa İçerik Ekle"
+        })
+    }catch(err){console.log(err)}
+})
+//kullanıcıdan alınan anasayfa içeriği veritabanına işlenir
+router.post("/index-add",async function (req,res) {
+    const title=req.body.baslik
+    const text = req.body.aciklama
+    try{
+        await db.execute("INSERT INTO anasayfatext (title,text) VALUES (?,?)",[title,text])
+        res.redirect("/admin/index-list")
+    }
+    catch(err){console.log(err)}
+    
+})
 // anasayfa düzenlemek için veritabanındaki anasayfatext tablosunu getirir
 router.get("/index-list",async function(req,res){
     try{
@@ -202,7 +223,27 @@ router.post("/index-edit/:textid", async function(req,res){
         console.log(err)
     }
 })
+router.get("/index-delete/:textid", async function(req,res){
+    const id = req.params.textid
 
+    try{
+        const [veri, ]=await db.execute("select * from anasayfatext Where textid=?",[id])
+        const gelen = veri[0]
+        res.render("admin/index-delete",{
+            title : "Anasayfa İçerik Silme İşlemi",
+            gelen:gelen
+        })
+    }catch(err){console.log(err)}
+})
+router.post("/index-delete/:textid", async function(req,res){
+    const id=req.params.textid
+    try{
+        await db.execute("DELETE FROM anasayfatext where textid=?",[id])
+        res.redirect("/admin/index-list")
+    }catch(err){
+        console.log(err)
+    }
+})
 
 
 
