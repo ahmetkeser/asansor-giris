@@ -50,27 +50,26 @@ router.post("/hizmet-edit/:hizid", async function(req,res){
     }
 })
 // hizmet listesinden silinmek istenen kaydı getirip silme onayı alır vvv
-router.get("/hizmet-delete/:hizid"),async function(req,res){
+router.get("/hizmet-delete/:hizid",async function(req,res){
     const hizmetid=req.params.hizid
     try{
-        const [gelenHizmet, ] = await db.execute("select hizmetler From Where hizmetid=?", [hizmetid])
+        const [gelenHizmet, ] = await db.execute("SELECT * FROM hizmetler WHERE hizmetid=?", [hizmetid]);
         const hizmet=gelenHizmet[0]
-        req.render("admin/blog-delete",{
+        res.render("admin/hizmet-delete",{
             title:"Hizmet Silme",
             hizmet:hizmet
         })
     }catch(err){console.log(err)}
     
-}
+})
 // hizmet listesinden silinmek istenen kaydı getirip silme onayı veri tabanına göndererek silme işlemini tamamlar
-router.post("/hizmet-delete/:hizid"), async function(req,res){
+router.post("/hizmet-delete/:hizid", async function(req,res){
     const hizmetid = req.body.hizmetid
-    console.log(hizmetid)
     try{
         await db.execute("DELETE FROM hizmetler WHERE hizmetid=?",[hizmetid])
         res.redirect("/admin/hizmetler-list")
     }catch(err){console.log(err)}
-}
+})
 // yeni girilecek hizmet kaydını kullanıcıdan alır
 router.get("/hizmet-add", async function(req,res){
     try{
