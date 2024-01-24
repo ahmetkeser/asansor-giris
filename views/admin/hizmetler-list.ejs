@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <%- include('../partials/head') %>
+    <%- include('../partials/head',{pagetitle}) %>
 </head>
 <body>
 <!-- Navbar -->
@@ -10,6 +10,7 @@
 <!-- Ana İçerik -->
     <div class="container mt-3">
         <div class="row">
+            <%- include('../partials/return-action', { action, id }) %><!-- post ile gelen action methodunu yazdırır    -->
             <div class="col-md12 mt-3">
                 <table class="table table-bordered table-striped">
                     <tr><a class="btn btn-l btn-success col-md-3" href="/admin/hizmet-add">+ Yeni Hizmet Ekle +</a></tr>
