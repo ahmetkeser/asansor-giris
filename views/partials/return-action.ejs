@@ -1,0 +1,15 @@
+<% if (action != "undifined" && action =="edit") { %>
+    <div class="alert alert-warning">
+        <%=id %> numaralı İd kayıt Güncelleme işlemi başarılı
+    </div>
+<% } %>
+<% if (action != "undifined" && action =="add") { %>
+    <div class="alert alert-success">
+        Yeni Veri Ekleme İşlemi Başarılı
+    </div>
+<% } %>
+<% if (action != "undifined" && action =="delete") { %>
+    <div class="alert alert-danger">
+        <%=id %> numaralı id Kayıt Silme İşlemi Başarılı 
+    </div>
+<% } %>

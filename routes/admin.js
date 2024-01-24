@@ -8,8 +8,10 @@ router.get("/hizmetler-list", async function(req,res){
     try{
         const[gelenHizmet, ]=await db.execute("select * from hizmetler")
         res.render("admin/hizmetler-list",{
-            title:"Hizmet Düzenle",
-            gelenHizmet: gelenHizmet
+            pagetitle:"Hizmet Düzenle",
+            gelenHizmet: gelenHizmet,
+            action: req.query.action,
+            id: req.query.id
         })
     }catch(err){ console.log(err) }
 })
@@ -24,7 +26,7 @@ router.get("/hizmet-edit/:hizid", async function(req,res){
         const gelen=gelenHizmet[0]
         if(gelen){
             return res.render("admin/hizmet-edit",{
-                title:"Hizmet Düzenle",
+                pagetitle:"Hizmet Düzenle",
                 gelen:gelen,
             })
         }
@@ -43,7 +45,7 @@ router.post("/hizmet-edit/:hizid", async function(req,res){
     try{
         const[gelenHizmet, ]=await db.execute("UPDATE hizmetler SET hizmettitle=? , hizmettext=? , hizmetresim=? WHERE hizmetid=?" ,[hizmettitle, hizmettext,hizmetresim, hizmetid ])
         const gelen=gelenHizmet[0]
-        res.redirect("/admin/hizmetler-list")
+        res.redirect("/admin/hizmetler-list?action=edit&id="+hizmetid)
         
     }catch(err){
         console.log(err)
@@ -56,7 +58,7 @@ router.get("/hizmet-delete/:hizid",async function(req,res){
         const [gelenHizmet, ] = await db.execute("SELECT * FROM hizmetler WHERE hizmetid=?", [hizmetid]);
         const hizmet=gelenHizmet[0]
         res.render("admin/hizmet-delete",{
-            title:"Hizmet Silme",
+            pagetitle:"Hizmet Silme",
             hizmet:hizmet
         })
     }catch(err){console.log(err)}
@@ -67,14 +69,14 @@ router.post("/hizmet-delete/:hizid", async function(req,res){
     const hizmetid = req.body.hizmetid
     try{
         await db.execute("DELETE FROM hizmetler WHERE hizmetid=?",[hizmetid])
-        res.redirect("/admin/hizmetler-list")
+        res.redirect("/admin/hizmetler-list?action=delete&id="+hizmetid)
     }catch(err){console.log(err)}
 })
 // yeni girilecek hizmet kaydını kullanıcıdan alır
 router.get("/hizmet-add", async function(req,res){
     try{
         res.render("admin/hizmet-add",{
-            title:"Hizmet Ekle"
+            pagetitle:"Hizmet Ekle"
         })
     }catch(err){
         console.log(err)
@@ -88,7 +90,7 @@ router.post("/hizmet-add", async function(req,res){
     try{
         await db.execute("INSERT INTO hizmetler (hizmettitle, hizmettext, hizmetresim) VALUES (?, ?, ?)", [hizmettitle, hizmettext, hizmetresim])
 
-        res.redirect("/admin/hizmetler-list") // işlem bittikten sonra hizmetler sayfasına yönlendirir.
+        res.redirect("/admin/hizmetler-list?action=add") // işlem bittikten sonra hizmetler sayfasına yönlendirir.
     }catch(err){console.log(err)}
 })
 //-------------------------------------------------
@@ -97,8 +99,10 @@ router.get("/referans-list", async function(req,res){
     try{
         const[referanslar, ]=await db.execute("select * from referanslar")
         res.render("admin/referans-list",{
-            title:"Referans Listesi",
-            referanslar: referanslar
+            pagetitle:"Referans Listesi",
+            referanslar: referanslar,
+            action: req.query.action,
+            id:req.query.id
         })
     }catch(err){ console.log(err) }
 })
@@ -110,7 +114,7 @@ router.get("/referans-edit/:refid", async function(req,res){
         const gelen=gelenveri[0]
         if(gelen){
             return res.render("admin/referans-edit",{
-                title:"Referans Düzenle",
+                pagetitle:"Referans Düzenle",
                 gelen:gelen,
             })
         }
@@ -130,7 +134,7 @@ router.post("/referans-edit/:refid", async function(req,res){
     try{
         const[gelenv, ]=await db.execute("UPDATE referanslar SET referanstitle=? , referansresim=?, referansmodel=?, referanstext=?  WHERE referansid=?" ,[referanstitle,referansresim,referansmodel, referanstext, referansid ])
         const gelen=gelenv[0]
-        res.redirect("/admin/referans-list")
+        res.redirect("/admin/referans-list?action=edit&id="+referansid)
         
     }catch(err){
         console.log(err)
@@ -140,7 +144,7 @@ router.post("/referans-edit/:refid", async function(req,res){
 router.get("/referans-add", async function(req,res){
     try{
         res.render("admin/referans-add",{
-            title:"Referans Ekle",
+            pagetitle:"Referans Ekle",
         })
     }catch(err){
         console.log(err)
@@ -154,17 +158,16 @@ router.post("/referans-add", async function(req,res){
     const referansresim = req.body.resim
     try{
         await db.execute("INSERT INTO referanslar (referanstitle, referansresim, referansmodel, referanstext) VALUES (?, ?, ?,?)", [referanstitle, referansresim,referansmodel, referanstext])
-        res.redirect("/admin/referans-list") // işlem bittikten sonra referanslar sayfasına yönlendirir.
+        res.redirect("/admin/referans-list?action=add") // işlem bittikten sonra referanslar sayfasına yönlendirir.
     }catch(err){console.log(err)}
 })
 // silme seçimi yapılan referans kaydını veritabanından getirir
 router.get("/referans-delete/:refid", async function(req,res){
     const id = req.params.refid
-    console.log("gelen")
     try{
         const [veri, ] = await db.execute("select * from referanslar where referansid=?",[id])
         res.render("admin/referans-delete",{
-            title:"Silme İşlemi Onay Sayfası",
+            pagetitle:"Silme İşlemi Onay Sayfası",
             gelen:veri
         })
     }
@@ -175,7 +178,7 @@ router.post("/referans-delete/:refid", async function(req,res){
     const id = req.params.refid
     try{
         await db.execute("Delete From referanslar where referansid=?",[id])
-        res.redirect("/admin/referans-list")
+        res.redirect("/admin/referans-list?action=delete&id="+id)
     }
     catch(err){console.log(err)}
 })
@@ -184,17 +187,17 @@ router.post("/referans-delete/:refid", async function(req,res){
 router.get("/index-add", async function(req,res){
     try{
         res.render("admin/index-add",{
-            title:"Anasayfa İçerik Ekle"
+            pagetitle:"Anasayfa İçerik Ekle"
         })
     }catch(err){console.log(err)}
 })
 //kullanıcıdan alınan anasayfa içeriği veritabanına işlenir
 router.post("/index-add",async function (req,res) {
-    const title=req.body.baslik
+    const pagetitle=req.body.baslik
     const text = req.body.aciklama
     try{
-        await db.execute("INSERT INTO anasayfatext (title,text) VALUES (?,?)",[title,text])
-        res.redirect("/admin/index-list")
+        await db.execute("INSERT INTO anasayfatext (title,text) VALUES (?,?)",[pagetitle,text])
+        res.redirect("/admin/index-list?action=add")
     }
     catch(err){console.log(err)}
     
@@ -204,8 +207,10 @@ router.get("/index-list",async function(req,res){
     try{
         const [gelen, ] = await db.execute("select * from anasayfatext")
         res.render("admin/index-list",{
-            title:"Anasayfa Bilgi Düzenle",
-            gelen:gelen
+            pagetitle:"Anasayfa Bilgi Düzenle",
+            gelen:gelen,
+            action : req.query.action,
+            id:req.query.id
         })
     }catch(err){
         console.log(err)
@@ -221,7 +226,7 @@ router.get("/index-edit/:textid", async function(req,res){
         const gelen=veri[0]
         if(gelen){
             return res.render("admin/index-edit",{
-                title:"index verisi güncelle",
+                pagetitle:"index verisi güncelle",
                 gelen:gelen,
             })
         }
@@ -238,7 +243,7 @@ router.post("/index-edit/:textid", async function(req,res){
     const text = req.body.aciklama
     try{
         const[gelen, ]=await db.execute("UPDATE anasayfatext SET title=? , text=? WHERE textid=?" ,[title, text, textid ])
-        res.redirect("/admin/index-list")
+        res.redirect("/admin/index-list?action=edit&id="+textid)
         
     }catch(err){
         console.log(err)
@@ -260,7 +265,7 @@ router.post("/index-delete/:textid", async function(req,res){
     const id=req.params.textid
     try{
         await db.execute("DELETE FROM anasayfatext where textid=?",[id])
-        res.redirect("/admin/index-list")
+        res.redirect("/admin/index-list?action=delete&id="+id)
     }catch(err){
         console.log(err)
     }
