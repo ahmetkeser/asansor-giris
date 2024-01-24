@@ -157,6 +157,28 @@ router.post("/referans-add", async function(req,res){
         res.redirect("/admin/referans-list") // işlem bittikten sonra referanslar sayfasına yönlendirir.
     }catch(err){console.log(err)}
 })
+// silme seçimi yapılan referans kaydını veritabanından getirir
+router.get("/referans-delete/:refid", async function(req,res){
+    const id = req.params.refid
+    console.log("gelen")
+    try{
+        const [veri, ] = await db.execute("select * from referanslar where referansid=?",[id])
+        res.render("admin/referans-delete",{
+            title:"Silme İşlemi Onay Sayfası",
+            gelen:veri
+        })
+    }
+    catch(err){console.log(err)}
+})
+// onayı alınan silme işlemini veritabanına silme kodunu gönderir
+router.post("/referans-delete/:refid", async function(req,res){
+    const id = req.params.refid
+    try{
+        await db.execute("Delete From referanslar where referansid=?",[id])
+        res.redirect("/admin/referans-list")
+    }
+    catch(err){console.log(err)}
+})
 //-------------------------------------------------
 // anasayfa içeriğini kullanıcıdan alır
 router.get("/index-add", async function(req,res){
@@ -214,7 +236,6 @@ router.post("/index-edit/:textid", async function(req,res){
     const textid =req.params.textid
     const title=req.body.baslik
     const text = req.body.aciklama
-    console.log(textid)
     try{
         const[gelen, ]=await db.execute("UPDATE anasayfatext SET title=? , text=? WHERE textid=?" ,[title, text, textid ])
         res.redirect("/admin/index-list")
