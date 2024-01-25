@@ -1,5 +1,6 @@
 const express = require("express")
 const router = express.Router()
+const imageUpload =require("../helpers/image-upload")
 
 const db = require("../data/db")
 //-------------------------------------------------
@@ -82,11 +83,13 @@ router.get("/hizmet-add", async function(req,res){
         console.log(err)
     }
 })
+
+
 // yeni girilecek hizmet kaydını veri tabanına gönderir
-router.post("/hizmet-add", async function(req,res){
+router.post("/hizmet-add",imageUpload.upload.single("resim") ,async function(req,res){
     const hizmettitle=req.body.baslik
     const hizmettext = req.body.aciklama
-    const hizmetresim = req.body.resim
+    const hizmetresim = req.file.filename // resim dosya şeklinde yükleneceği için multi kütüphanesi kuruldu
     try{
         await db.execute("INSERT INTO hizmetler (hizmettitle, hizmettext, hizmetresim) VALUES (?, ?, ?)", [hizmettitle, hizmettext, hizmetresim])
 
