@@ -256,7 +256,7 @@ router.get("/index-delete/:textid", async function(req,res){
         const [veri, ]=await db.execute("select * from anasayfatext Where textid=?",[id])
         const gelen = veri[0]
         res.render("admin/index-delete",{
-            title : "Anasayfa İçerik Silme İşlemi",
+            pagetitle: "Anasayfa İçerik Silme İşlemi",
             gelen:gelen
         })
     }catch(err){console.log(err)}
