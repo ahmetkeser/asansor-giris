@@ -1,6 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const imageUpload =require("../helpers/image-upload")
+const fs=require("fs") // resim güncelleme işleminde yeni seçilen resim durumunda eski resmi dosyadan silme işlemi için fs modülünü kullandık.
 
 const db = require("../data/db")
 //-------------------------------------------------
@@ -38,11 +39,17 @@ router.get("/hizmet-edit/:hizid", async function(req,res){
     }
 })
 // hizmet listesinden düzennleme için gelen kaydı veri tabanına gönderir vvv
-router.post("/hizmet-edit/:hizid", async function(req,res){
+router.post("/hizmet-edit/:hizid",imageUpload.upload.single("resim"), async function(req,res){
     const hizmetid =req.body.hizmetid
     const hizmettitle=req.body.baslik
     const hizmettext = req.body.aciklama
-    const hizmetresim = req.body.resim
+    let hizmetresim = req.body.resim
+    if(req.file){ //file bilgisi set edildi ise
+        hizmetresim=req.file.filename // resim seçildi isegüncelleme ile gelen orjinal resim yerine yeni resim seçimi burada yapılır.
+        fs.unlink("./public/images/"+req.body.resim,err=>{ //klasördeki eski resmi fs modülü ile siler, aksi durumda hata mesjı verir.
+            console.log(err)
+        })
+    }
     try{
         const[gelenHizmet, ]=await db.execute("UPDATE hizmetler SET hizmettitle=? , hizmettext=? , hizmetresim=? WHERE hizmetid=?" ,[hizmettitle, hizmettext,hizmetresim, hizmetid ])
         const gelen=gelenHizmet[0]
