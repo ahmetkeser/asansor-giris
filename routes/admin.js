@@ -135,11 +135,14 @@ router.get("/referans-edit/:refid", async function(req,res){
     }
 })
 // referans listesinden düzennleme için gelen kaydı veri tabanına gönderir vvv
-router.post("/referans-edit/:refid", async function(req,res){
+router.post("/referans-edit/:refid",imageUpload.upload.single("resim"), async function(req,res){
     const referansid =req.body.referansid
     const referanstitle=req.body.baslik
     const referanstext = req.body.aciklama
-    const referansresim = req.body.resim
+    let referansresim = req.body.resim
+    if(req.file){
+        referansresim =req.file.filename
+    }
     const referansmodel = req.body.model
     try{
         const[gelenv, ]=await db.execute("UPDATE referanslar SET referanstitle=? , referansresim=?, referansmodel=?, referanstext=?  WHERE referansid=?" ,[referanstitle,referansresim,referansmodel, referanstext, referansid ])
