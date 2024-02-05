@@ -46,9 +46,9 @@ router.post("/hizmet-edit/:hizid",imageUpload.upload.single("resim"), async func
     let hizmetresim = req.body.resim
     if(req.file){ //file bilgisi set edildi ise
         hizmetresim=req.file.filename // resim seçildi isegüncelleme ile gelen orjinal resim yerine yeni resim seçimi burada yapılır.
-        fs.unlink("./public/images/"+req.body.resim,err=>{ //klasördeki eski resmi fs modülü ile siler, aksi durumda hata mesjı verir.
-            console.log(err)
-        })
+        fs.unlink("./public/images/"+req.body.resim //klasördeki eski resmi fs modülü ile siler, aksi durumda hata mesjı verir.
+            // console.log(err+"yakala")
+        )
     }
     try{
         const[gelenHizmet, ]=await db.execute("UPDATE hizmetler SET hizmettitle=? , hizmettext=? , hizmetresim=? WHERE hizmetid=?" ,[hizmettitle, hizmettext,hizmetresim, hizmetid ])
@@ -142,6 +142,7 @@ router.post("/referans-edit/:refid",imageUpload.upload.single("resim"), async fu
     let referansresim = req.body.resim
     if(req.file){
         referansresim =req.file.filename
+        fs.unlink("./public/images/"+req.body.resim)
     }
     const referansmodel = req.body.model
     try{

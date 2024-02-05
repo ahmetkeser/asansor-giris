@@ -21,7 +21,7 @@
                     <div class="row mb-3">
                         <label for="aciklama" class="col-sm-2 col-form-label">Açıklama</label>
                         <div class="col-sm-8">
-                            <textarea name="aciklama" rows="10" class="form-control"></textarea>
+                            <textarea name="aciklama" id="editor" rows="10" class="form-control"></textarea>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -48,6 +48,15 @@
 
 <!-- Footer -->
 <%- include('../partials/footer') %>
-
+<!-- Editör Bölümü -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create( document.querySelector( '#editor' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>
+<!-- Editör Bölümü -->
 </body>
 </html>
