@@ -9,8 +9,8 @@ const Hizmetlerdb = require("../models/hizmetlerdb")
 const Iletisimdb = require("../models/iletisimdb")
 const Linkpaneldb = require("../models/linkpaneldb")
 const Referanslardb = require("../models/referanslardb")
-const anasayfatextdb = require("../models/anasayfatextdb")
-const referanslardb = require("../models/referanslardb")
+const hizmetlerdb = require("../models/hizmetlerdb")
+
 //-------------------------------------------------
 // Hizmet Listesini veritabanından getirir
 router.get("/hizmetler-list", async function(req,res){
@@ -31,12 +31,18 @@ router.get("/hizmet-edit/:hizid", async function(req,res){
     // const hizmettext = req.body.aciklama
     // const hizmetresim = req.body.resim
     try{
-        const[gelenHizmet, ]=await db.execute("select * from hizmetler where hizmetid = ?",[hizid])
-        const gelen=gelenHizmet[0]
+        // const[gelenHizmet, ]=await db.execute("select * from hizmetler where hizmetid = ?",[hizid])
+                    // const gelen=await Hizmetlerdb.findAll({
+                    //     where:{
+                    //         hizmetid:hizid
+                    //     }
+                    // })
+        
+        const gelen = await hizmetlerdb.findByPk(hizid) // veritabanından primarykey e göre çağırma yapar findByPk
         if(gelen){
             return res.render("admin/hizmet-edit",{
                 pagetitle:"Hizmet Düzenle",
-                gelen:gelen,
+                gelen:gelen.dataValues,
             })
         }
         res.redirect("admin/hizmetler-list")
@@ -111,7 +117,7 @@ router.post("/hizmet-add",imageUpload.upload.single("resim") ,async function(req
 // Referanslar Listesini veritabanından getirir vvv
 router.get("/referans-list", async function(req,res){
     try{
-        referanslar=await Referanslardb.findAll()
+       const referanslar=await Referanslardb.findAll()
         res.render("admin/referans-list",{
             pagetitle:"Referans Listesi",
             referanslar: referanslar,
@@ -124,12 +130,13 @@ router.get("/referans-list", async function(req,res){
 router.get("/referans-edit/:refid", async function(req,res){
     const refid =req.params.refid
     try{
-        const[gelenveri, ]=await db.execute("select * from referanslar where referansid = ?",[refid])
-        const gelen=gelenveri[0]
+        // const[gelenveri, ]=await db.execute("select * from referanslar where referansid = ?",[refid])
+        // const gelen=gelenveri[0]
+        const gelen = await hizmetlerdb.findByPk(refid)
         if(gelen){
             return res.render("admin/referans-edit",{
                 pagetitle:"Referans Düzenle",
-                gelen:gelen,
+                gelen:gelen.dataValues,
             })
         }
         res.redirect("admin/referans-list")
@@ -170,7 +177,7 @@ router.get("/referans-add", async function(req,res){
 })
 // yeni girilecek referans kaydını veri tabanına gönderir
 router.post("/referans-add",imageUpload.upload.single("resim"), async function(req,res){
-    const referanstitle=req.body.baslik
+    const referanstitle = req.body.baslik
     const referanstext = req.body.aciklama
     const referansmodel = req.body.model
     const referansresim = req.file.filename
@@ -240,12 +247,13 @@ router.get("/index-edit/:textid", async function(req,res){
     // const indextitle=req.body.baslik
     // const indextext = req.body.aciklama
     try{
-        const[veri, ]=await db.execute("select * from anasayfatext where textid = ?",[inid])
-        const gelen=veri[0]
+        // const[veri, ]=await db.execute("select * from anasayfatext where textid = ?",[inid])
+        // const gelen=veri[0]
+        const gelen = await hizmetlerdb.findByPk(inid)
         if(gelen){
             return res.render("admin/index-edit",{
                 pagetitle:"index verisi güncelle",
-                gelen:gelen,
+                gelen:gelen.dataValues,
             })
         }
         res.redirect("admin/index-list")
@@ -288,7 +296,6 @@ router.post("/index-delete/:textid", async function(req,res){
         console.log(err)
     }
 })
-
 
 router.use("/categories",function(req,res){
     res.render("admin/index-edit")

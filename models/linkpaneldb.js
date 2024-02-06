@@ -21,7 +21,7 @@ const linkpaneldb= sequelize.define("linkpanel",{
     timestamps : false // otomatik ekleme ve güncelleme satırı oluşturmaması için bunu yazabiliriz.
 })
 async function sync(){                        // alter ise veri tabanı şemasında değişiklik varsa aktarılsın
-    await linkpaneldb.sync({force:true}) // force her çalıştığında tablolar varsa siler tekrar oluşturur yayınlama aşamasında burası magrations ile değiştirilecek
+    await linkpaneldb.sync({alter:true}) // force her çalıştığında tablolar varsa siler tekrar oluşturur yayınlama aşamasında burası magrations ile değiştirilecek
     console.log("Link Panel tablosu eklendi")
     // await linkpaneldb.create({
     //     paneltitle:"Hizmetler",
