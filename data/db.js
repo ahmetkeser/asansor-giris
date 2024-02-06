@@ -1,4 +1,4 @@
-const mysql=require("mysql2") // import ettiğimiz mysql2 kütüphanesini çağırıyoruz
+//const mysql=require("mysql2") // import ettiğimiz mysql2 kütüphanesini çağırıyoruz
 const config=require("../config") // slq bilgilerini sakladığımız kendi dosyamızı çağırdık
 // let connection=mysql.createConnection(config.db) // yeni bir mysql bağlantısı oluşturduk
 // connection.connect(function(err){ // bağlantıyı başlattık

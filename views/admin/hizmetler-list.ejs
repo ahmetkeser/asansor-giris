@@ -26,13 +26,13 @@
                     <tbody>
                         <% gelenHizmet.forEach(hizmet =>{ %>
                             <tr>
-                                <td>#<%= hizmet.hizmetid %></td>
-                                <td><%= hizmet.hizmettitle %></td>
-                                <td><%= hizmet.hizmettext %></td>
-                                <td style="width: 110px; height: 110px"><img src="/static/images/<%= hizmet.hizmetresim%>" class="img-fluid" alt=""></td>
+                                <td>#<%= hizmet.dataValues.hizmetid %></td>
+                                <td><%= hizmet.dataValues.hizmettitle %></td>
+                                <td><%= hizmet.dataValues.hizmettext %></td>
+                                <td style="width: 110px; height: 110px"><img src="/static/images/<%= hizmet.dataValues.hizmetresim%>" class="img-fluid" alt=""></td>
                                 <td>
-                                    <a class="btn btn-sm btn-primary col-md-12" href="/admin/hizmet-edit/<%=hizmet.hizmetid%>" name="">Edit</a>
-                                    <a class="btn btn-sm btn-danger col-md-12" href="/admin/hizmet-delete/<%=hizmet.hizmetid%>" name="">Delete</a>
+                                    <a class="btn btn-sm btn-primary col-md-12" href="/admin/hizmet-edit/<%=hizmet.dataValues.hizmetid%>" name="">Edit</a>
+                                    <a class="btn btn-sm btn-danger col-md-12" href="/admin/hizmet-delete/<%=hizmet.dataValues.hizmetid%>" name="">Delete</a>
                                 </td>
                             </tr>
                         <% }) %>

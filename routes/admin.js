@@ -4,11 +4,18 @@ const imageUpload =require("../helpers/image-upload")
 const fs=require("fs") // resim güncelleme işleminde yeni seçilen resim durumunda eski resmi dosyadan silme işlemi için fs modülünü kullandık.
 
 const db = require("../data/db")
+const Anasayfatextdb = require("../models/anasayfatextdb")
+const Hizmetlerdb = require("../models/hizmetlerdb")
+const Iletisimdb = require("../models/iletisimdb")
+const Linkpaneldb = require("../models/linkpaneldb")
+const Referanslardb = require("../models/referanslardb")
+const anasayfatextdb = require("../models/anasayfatextdb")
+const referanslardb = require("../models/referanslardb")
 //-------------------------------------------------
-// Hizmet Listesini veritabanından getirir vvv
+// Hizmet Listesini veritabanından getirir
 router.get("/hizmetler-list", async function(req,res){
     try{
-        const[gelenHizmet, ]=await db.execute("select * from hizmetler")
+       const gelenHizmet =await Hizmetlerdb.findAll()
         res.render("admin/hizmetler-list",{
             pagetitle:"Hizmet Düzenle",
             gelenHizmet: gelenHizmet,
@@ -90,16 +97,13 @@ router.get("/hizmet-add", async function(req,res){
         console.log(err)
     }
 })
-
-
 // yeni girilecek hizmet kaydını veri tabanına gönderir
 router.post("/hizmet-add",imageUpload.upload.single("resim") ,async function(req,res){
     const hizmettitle=req.body.baslik
     const hizmettext = req.body.aciklama
     const hizmetresim = req.file.filename // resim dosya şeklinde yükleneceği için multi kütüphanesi kuruldu
     try{
-        await db.execute("INSERT INTO hizmetler (hizmettitle, hizmettext, hizmetresim) VALUES (?, ?, ?)", [hizmettitle, hizmettext, hizmetresim])
-
+        await Hizmetlerdb.create({hizmettitle:hizmettitle,hizmettext:hizmettext,hizmetresim:hizmetresim})
         res.redirect("/admin/hizmetler-list?action=add") // işlem bittikten sonra hizmetler sayfasına yönlendirir.
     }catch(err){console.log(err)}
 })
@@ -107,7 +111,7 @@ router.post("/hizmet-add",imageUpload.upload.single("resim") ,async function(req
 // Referanslar Listesini veritabanından getirir vvv
 router.get("/referans-list", async function(req,res){
     try{
-        const[referanslar, ]=await db.execute("select * from referanslar")
+        referanslar=await Referanslardb.findAll()
         res.render("admin/referans-list",{
             pagetitle:"Referans Listesi",
             referanslar: referanslar,
@@ -165,13 +169,13 @@ router.get("/referans-add", async function(req,res){
     }
 })
 // yeni girilecek referans kaydını veri tabanına gönderir
-router.post("/referans-add", async function(req,res){
+router.post("/referans-add",imageUpload.upload.single("resim"), async function(req,res){
     const referanstitle=req.body.baslik
     const referanstext = req.body.aciklama
     const referansmodel = req.body.model
-    const referansresim = req.body.resim
+    const referansresim = req.file.filename
     try{
-        await db.execute("INSERT INTO referanslar (referanstitle, referansresim, referansmodel, referanstext) VALUES (?, ?, ?,?)", [referanstitle, referansresim,referansmodel, referanstext])
+        await Referanslardb.create({referanstitle:referanstitle,referansresim:referansresim,referansmodel:referansmodel,referanstext:referanstext})
         res.redirect("/admin/referans-list?action=add") // işlem bittikten sonra referanslar sayfasına yönlendirir.
     }catch(err){console.log(err)}
 })
@@ -210,7 +214,7 @@ router.post("/index-add",async function (req,res) {
     const pagetitle=req.body.baslik
     const text = req.body.aciklama
     try{
-        await db.execute("INSERT INTO anasayfatext (title,text) VALUES (?,?)",[pagetitle,text])
+        await Anasayfatextdb.create({title:pagetitle,text:text})
         res.redirect("/admin/index-list?action=add")
     }
     catch(err){console.log(err)}
@@ -219,7 +223,7 @@ router.post("/index-add",async function (req,res) {
 // anasayfa düzenlemek için veritabanındaki anasayfatext tablosunu getirir
 router.get("/index-list",async function(req,res){
     try{
-        const [gelen, ] = await db.execute("select * from anasayfatext")
+        const gelen = await Anasayfatextdb.findAll()
         res.render("admin/index-list",{
             pagetitle:"Anasayfa Bilgi Düzenle",
             gelen:gelen,
@@ -284,7 +288,6 @@ router.post("/index-delete/:textid", async function(req,res){
         console.log(err)
     }
 })
-
 
 
 router.use("/categories",function(req,res){
