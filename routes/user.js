@@ -15,7 +15,7 @@ router.use("/hizmetler/:hizmetid", async function(req,res){
         // const [hizmet, ] = await db.execute("select * from hizmetler where hizmetid=?",[hizid])
         const hizmet = await Hizmetlerdb.findByPk(hizid)
         // const [linkbar, ]=await db.execute("select * from linkpanel")
-        const linkbar= await Linkpaneldb.findAll()
+        const linkbar= await Linkpaneldb.findAll({raw:true}) // raw:true nin görevi çağırılan verilerdeki dullanımdışı bilgileri almasını istemememiz.
         if(hizmet){ //kullanıcının talep ettiği idli hizmet varsa çalışır
             
             return res.render("users/hizmet-detay",{hizmet:hizmet.dataValues,linkbar,title:hizid})
@@ -28,7 +28,7 @@ router.use("/hizmetler/:hizmetid", async function(req,res){
 router.use("/iletisim", async function(req,res){
     try{
         // const res2=await db.execute("select * from linkpanel")
-        const res2=await Linkpaneldb.findAll()
+        const res2=await Linkpaneldb.findAll({raw:true})
         res.render("users/iletisim",{
             title:"İletişim",
             linkbar:res2
@@ -41,9 +41,9 @@ router.use("/iletisim", async function(req,res){
 router.use("/referanslar", async function(req,res){
     try{
         // const res1 =await db.execute("select * from referanslar")
-        const res1 =await Referanslardb.findAll()
+        const res1 =await Referanslardb.findAll({raw:true})
         // const res2=await db.execute("select * from linkpanel")
-        const res2=await Linkpaneldb.findAll()
+        const res2=await Linkpaneldb.findAll({raw:true})
         res.render("users/referanslar",{
             title:"Referanslar",
             referanslar : res1,
@@ -55,9 +55,9 @@ router.use("/referanslar", async function(req,res){
 router.use("/hizmetler", async function(req,res){
     try{
         // const res1 =await db.execute("select * from hizmetler")
-        const res1 =await Hizmetlerdb.findAll()
+        const res1 =await Hizmetlerdb.findAll({raw:true})
         // const res2=await db.execute("select * from linkpanel")
-        const res2=await Linkpaneldb.findAll()
+        const res2=await Linkpaneldb.findAll({raw:true})
         res.render("users/hizmetler",{
             title:"Hizmetler",
             categories : res1,
@@ -71,9 +71,9 @@ router.use("/hizmetler", async function(req,res){
 router.use("/",async function(req,res){ // talep yazıldığı zaman karşılanması için
     try{
         // const res1 =await db.execute("select * from anasayfatext")
-        const res1 =await Anasayfatextdb.findAll()
+        const res1 =await Anasayfatextdb.findAll({raw:true})
         // const res2=await db.execute("select * from linkpanel")
-        const res2=await Linkpaneldb.findAll()
+        const res2=await Linkpaneldb.findAll({raw:true})
         res.render("users/index",{
             title:"Anasayfa",
             bodytext : res1,
