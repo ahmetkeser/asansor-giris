@@ -1,6 +1,5 @@
 const express = require("express")
 const router=express.Router()
-const db=require("../data/db")// sql bağlantısını çağırdık
 const Anasayfatextdb = require("../models/anasayfatextdb")
 const Hizmetlerdb = require("../models/hizmetlerdb")
 const Iletisimdb = require("../models/iletisimdb")

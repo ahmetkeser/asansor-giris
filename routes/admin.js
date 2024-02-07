@@ -47,9 +47,7 @@ router.get("/hizmet-edit/:hizid", async function(req,res){
         }
         res.redirect("admin/hizmetler-list")
         
-    }catch(err){
-
-    }
+    }catch(err){console.log(err)}
 })
 // hizmet listesinden düzennleme için gelen kaydı veri tabanına gönderir vvv
 router.post("/hizmet-edit/:hizid",imageUpload.upload.single("resim"), async function(req,res){
@@ -64,10 +62,17 @@ router.post("/hizmet-edit/:hizid",imageUpload.upload.single("resim"), async func
         )
     }
     try{
-        const[gelenHizmet, ]=await db.execute("UPDATE hizmetler SET hizmettitle=? , hizmettext=? , hizmetresim=? WHERE hizmetid=?" ,[hizmettitle, hizmettext,hizmetresim, hizmetid ])
+        const gelenHizmet = await Hizmetlerdb.findByPk(hizmetid)
+        if(gelenHizmet){
+            gelenHizmet.hizmettitle = hizmettitle,
+            gelenHizmet.hizmettext = hizmettext,
+            gelenHizmet.hizmetresim = hizmetresim
+            await gelenHizmet.save()
+            return res.redirect("/admin/hizmetler-list?action=edit&id="+hizmetid)
+        }
+        // const[gelenHizmet, ]=await db.execute("UPDATE hizmetler SET hizmettitle=? , hizmettext=? ,hizmetresim=? WHERE hizmetid=?" ,[hizmettitle, hizmettext,hizmetresim, hizmetid ])
         const gelen=gelenHizmet[0]
-        res.redirect("/admin/hizmetler-list?action=edit&id="+hizmetid)
-        
+        res.redirect("/admin/hizmetler-list")
     }catch(err){
         console.log(err)
     }
@@ -132,7 +137,7 @@ router.get("/referans-edit/:refid", async function(req,res){
     try{
         // const[gelenveri, ]=await db.execute("select * from referanslar where referansid = ?",[refid])
         // const gelen=gelenveri[0]
-        const gelen = await hizmetlerdb.findByPk(refid)
+        const gelen = await Referanslardb.findByPk(refid)
         if(gelen){
             return res.render("admin/referans-edit",{
                 pagetitle:"Referans Düzenle",
@@ -157,13 +162,20 @@ router.post("/referans-edit/:refid",imageUpload.upload.single("resim"), async fu
     }
     const referansmodel = req.body.model
     try{
-        const[gelenv, ]=await db.execute("UPDATE referanslar SET referanstitle=? , referansresim=?, referansmodel=?, referanstext=?  WHERE referansid=?" ,[referanstitle,referansresim,referansmodel, referanstext, referansid ])
+        const gelenv = await Referanslardb.findByPk(referansid)
+        if(gelenv){
+            gelenv.referanstitle= referanstitle
+            gelenv.referansresim= referansresim
+            gelenv.referansmodel= referansmodel
+            gelenv.referanstext= referanstext
+            await gelenv.save()
+            return res.redirect("/admin/referans-list?action=edit&id="+referansid)
+        }
+        //const[gelenv, ]=await db.execute("UPDATE referanslar SET referanstitle=? , referansresim=?, referansmodel=?, referanstext=?  WHERE referansid=?" ,[referanstitle,referansresim,referansmodel, referanstext, referansid ])
         const gelen=gelenv[0]
-        res.redirect("/admin/referans-list?action=edit&id="+referansid)
+        res.redirect("/admin/referans-list")
         
-    }catch(err){
-        console.log(err)
-    }
+    }catch(err){console.log(err)}
 })
 // yeni girilecek referans kaydını kullanıcıdan alır
 router.get("/referans-add", async function(req,res){
@@ -171,9 +183,7 @@ router.get("/referans-add", async function(req,res){
         res.render("admin/referans-add",{
             pagetitle:"Referans Ekle",
         })
-    }catch(err){
-        console.log(err)
-    }
+    }catch(err){console.log(err)}
 })
 // yeni girilecek referans kaydını veri tabanına gönderir
 router.post("/referans-add",imageUpload.upload.single("resim"), async function(req,res){
@@ -249,7 +259,7 @@ router.get("/index-edit/:textid", async function(req,res){
     try{
         // const[veri, ]=await db.execute("select * from anasayfatext where textid = ?",[inid])
         // const gelen=veri[0]
-        const gelen = await hizmetlerdb.findByPk(inid)
+        const gelen = await Anasayfatextdb.findByPk(inid)
         if(gelen){
             return res.render("admin/index-edit",{
                 pagetitle:"index verisi güncelle",
@@ -268,8 +278,16 @@ router.post("/index-edit/:textid", async function(req,res){
     const title=req.body.baslik
     const text = req.body.aciklama
     try{
-        const[gelen, ]=await db.execute("UPDATE anasayfatext SET title=? , text=? WHERE textid=?" ,[title, text, textid ])
-        res.redirect("/admin/index-list?action=edit&id="+textid)
+        const gelen = await Anasayfatextdb.findByPk(textid)
+        if(gelen){
+            gelen.title=title
+            gelen.text = text
+
+            await gelen.save()
+            return res.redirect("/admin/index-list?action=edit&id="+textid)
+        }
+        //const[gelen, ]=await db.execute("UPDATE anasayfatext SET title=? , text=? WHERE textid=?" ,[title, text, textid ])
+        res.redirect("/admin/index-list")
         
     }catch(err){
         console.log(err)
