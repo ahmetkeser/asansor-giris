@@ -15,10 +15,9 @@ router.use("/hizmetler/:hizmetid", async function(req,res){
         // const [hizmet, ] = await db.execute("select * from hizmetler where hizmetid=?",[hizid])
         const hizmet = await Hizmetlerdb.findByPk(hizid)
         // const [linkbar, ]=await db.execute("select * from linkpanel")
-        const linkbar= await Linkpaneldb.findAll({raw:true}) // raw:true nin görevi çağırılan verilerdeki dullanımdışı bilgileri almasını istemememiz.
         if(hizmet){ //kullanıcının talep ettiği idli hizmet varsa çalışır
             
-            return res.render("users/hizmet-detay",{hizmet:hizmet.dataValues,linkbar,title:hizid})
+            return res.render("users/hizmet-detay",{hizmet:hizmet.dataValues,title:hizid})
         }
         res.redirect("/") // eğer hizmetler tablosunda kullanıcının talep ettiği id li bir hizmet yoksa ana sayfaya yönlendirir
     }
