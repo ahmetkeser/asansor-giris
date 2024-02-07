@@ -19,6 +19,22 @@ app.use("/static",express.static(path.join(__dirname,"public")))
 app.use("/admin",adminRoutes)// admin için yönlendiriciyi çalıştırır bu bir midelwear ara yazılım örneğidir "/admin" neden var dersen herzaman /admin ile başlayan uzantıları karşılar
 app.use(userRoutes)// user için yönlendiriciyi çalıştırır bu bir midelwear ara yazılım örneğidir
 
+const sequelize = require("./data/db")
+const dummyData = require("./data/dummy-data")
+async function deneme(){
+    console.log("giriş")
+    await sequelize.sync({force : true});
+    console.log("ikinci kanal giriş")
+    await dummyData();
+}
+deneme()
+// (async () =>{
+//     console.log("giriş")
+//     await sequelize.sync({force : true});
+//     console.log("ikinci kanal giriş")
+//     await dummyData();
+// })();
+
 app.listen(3000,function(){ // 3000 portunda bir server oluşturduk
     console.log("Listenin on port 3000")
 })

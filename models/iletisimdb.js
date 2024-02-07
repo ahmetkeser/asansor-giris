@@ -9,9 +9,5 @@ const iletisimdb= sequelize.define("iletisim",{
         primaryKey: true
     }
 })
-async function sync(){ // her çalıştığında tablolar varsa siler tekrar oluşturur yayınlama aşamasında burası magrations ile değiştirilecek
-    await iletisimdb.sync({force: true})
-    console.log("İletişim tablosu eklendi")
-}
-sync()
+
 module.exports=iletisimdb
