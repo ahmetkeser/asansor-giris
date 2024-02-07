@@ -81,12 +81,14 @@ router.post("/hizmet-edit/:hizid",imageUpload.upload.single("resim"), async func
 router.get("/hizmet-delete/:hizid",async function(req,res){
     const hizmetid=req.params.hizid
     try{
-        const [gelenHizmet, ] = await db.execute("SELECT * FROM hizmetler WHERE hizmetid=?", [hizmetid]);
-        const hizmet=gelenHizmet[0]
-        res.render("admin/hizmet-delete",{
-            pagetitle:"Hizmet Silme",
-            hizmet:hizmet
-        })
+        const hizmet = await Hizmetlerdb.findByPk(hizmetid,{raw:true})
+        if(hizmet){
+           return res.render("admin/hizmet-delete",{
+                pagetitle:"Hizmet Silme",
+                hizmet:hizmet
+            })
+        }
+        res.render("admin/hizmet-list")
     }catch(err){console.log(err)}
     
 })
@@ -94,8 +96,12 @@ router.get("/hizmet-delete/:hizid",async function(req,res){
 router.post("/hizmet-delete/:hizid", async function(req,res){
     const hizmetid = req.body.hizmetid
     try{
-        await db.execute("DELETE FROM hizmetler WHERE hizmetid=?",[hizmetid])
-        res.redirect("/admin/hizmetler-list?action=delete&id="+hizmetid)
+        const hizmet = await Hizmetlerdb.findByPk(hizmetid)
+        if(hizmet){
+            await hizmet.destroy()
+            return res.redirect("/admin/hizmetler-list?action=delete&id="+hizmetid)
+        }
+        res.redirect("/admin/hizmetler-list")
     }catch(err){console.log(err)}
 })
 // yeni girilecek hizmet kaydını kullanıcıdan alır
@@ -200,11 +206,14 @@ router.post("/referans-add",imageUpload.upload.single("resim"), async function(r
 router.get("/referans-delete/:refid", async function(req,res){
     const id = req.params.refid
     try{
-        const [veri, ] = await db.execute("select * from referanslar where referansid=?",[id])
-        res.render("admin/referans-delete",{
-            pagetitle:"Silme İşlemi Onay Sayfası",
-            gelen:veri
-        })
+        const veri = await Referanslardb.findByPk(id)
+        if(veri){
+            return res.render("admin/referans-delete",{
+                pagetitle:"Silme İşlemi Onay Sayfası",
+                gelen:veri
+            })
+        }
+        res.render("admin/referans-list")
     }
     catch(err){console.log(err)}
 })
@@ -212,8 +221,12 @@ router.get("/referans-delete/:refid", async function(req,res){
 router.post("/referans-delete/:refid", async function(req,res){
     const id = req.params.refid
     try{
-        await db.execute("Delete From referanslar where referansid=?",[id])
-        res.redirect("/admin/referans-list?action=delete&id="+id)
+        const veri = await Referanslardb.findByPk(id)
+        if(veri){
+            await veri.destroy()
+            return res.redirect("/admin/referans-list?action=delete&id="+id)
+        }
+        res.redirect("/admin/referans-list")
     }
     catch(err){console.log(err)}
 })
@@ -297,19 +310,25 @@ router.get("/index-delete/:textid", async function(req,res){
     const id = req.params.textid
 
     try{
-        const [veri, ]=await db.execute("select * from anasayfatext Where textid=?",[id])
-        const gelen = veri[0]
-        res.render("admin/index-delete",{
-            pagetitle: "Anasayfa İçerik Silme İşlemi",
-            gelen:gelen
-        })
+        const gelen = await Anasayfatextdb.findByPk(id)
+        if(gelen){
+            return res.render("admin/index-delete",{
+                pagetitle: "Anasayfa İçerik Silme İşlemi",
+                gelen:gelen
+            })
+        }
+        res.render("admin/index-list")
     }catch(err){console.log(err)}
 })
 router.post("/index-delete/:textid", async function(req,res){
     const id=req.params.textid
     try{
-        await db.execute("DELETE FROM anasayfatext where textid=?",[id])
-        res.redirect("/admin/index-list?action=delete&id="+id)
+        const gelen = await Anasayfatextdb.findByPk(id)
+        if(gelen){
+            await gelen.destroy()
+            return res.redirect("/admin/index-list?action=delete&id="+id)
+        }
+        res.redirect("/admin/index-list")
     }catch(err){
         console.log(err)
     }
